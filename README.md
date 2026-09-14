@@ -47,11 +47,11 @@ Dashboard má päť stránok:
 ## Screenshoty
 
 <img width="1597" height="901" alt="Dashboard_Prehlad" src="https://github.com/user-attachments/assets/28298b22-239f-48bc-847c-e0fc61777d06" />
+<img width="1582" height="885" alt="Dashboard_Analyza_Produktov" src="https://github.com/user-attachments/assets/76aae09e-b841-46e0-a53c-30730fa4487f" />
+<img width="1596" height="892" alt="Dashboard_Cenotvorba_Marza" src="https://github.com/user-attachments/assets/9115bcd4-4fa4-4d50-95fb-190fd41170be" />
+<img width="1592" height="892" alt="Dashboard_Objednavky_Vratenia" src="https://github.com/user-attachments/assets/7005d75c-7be1-4eec-b5ad-9a4009f9e70d" />
 
 
-![Overview](images/Dashboard_Prehlad.png)
-![Pricing and Margin Analysis](images/Dashboard_Cenotvorba_Marza.png)
-![Orders and Returns](images/Dashboard_Objednavky_Vratenia.png)
 
 *(nahraď obrázky vlastnými screenshotmi zo stránok dashboardu – ulož ich do priečinka `images/` v repozitári)*
 
