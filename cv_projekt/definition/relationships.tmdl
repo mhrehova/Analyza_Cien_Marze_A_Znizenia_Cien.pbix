@@ -1,0 +1,20 @@
+relationship AutoDetected_8fd55936-b258-4c3b-9455-36c74d37f83f
+	fromColumn: Produkty.KategoriaID
+	toColumn: Kategoria.KategoriaID
+
+relationship AutoDetected_81358d63-5c6b-425f-b257-6d675d3f23e6
+	fromColumn: Objednavky.ZakaznikID
+	toColumn: Zakaznici.ZakazniciID
+
+relationship AutoDetected_2fca3f44-2331-4fb5-8a58-50f9a118f0a7
+	fromColumn: DetailObjednavok.IDObjednavky
+	toColumn: Objednavky.ObjednavkaID
+
+relationship AutoDetected_998dfa76-6107-4975-ac73-df713b267285
+	fromColumn: DetailObjednavok.ProduktID
+	toColumn: Produkty.ProduktID
+
+relationship 561d4e09-3c9e-1831-8d84-c8c2e25c0e98
+	fromColumn: Objednavky.ObjednavkaDatum
+	toColumn: Datum.Datum
+

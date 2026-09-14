@@ -1,0 +1,45 @@
+table Kategoria
+	lineageTag: 431fabc4-0c82-4a2f-935c-2042447f526d
+
+	measure VsetkyObjednavky = ```
+			COUNTROWS('Objednavky')
+			
+			```
+		formatString: 0
+		lineageTag: 71a2baf9-8751-47bd-883f-9bdeef275ca5
+
+	column KategoriaID
+		dataType: string
+		lineageTag: 624bbeb9-c3b0-438f-90d4-3dbd33071eb6
+		summarizeBy: none
+		sourceColumn: KategoriaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column NazovKategorie
+		dataType: string
+		lineageTag: 45c8c864-1fa4-4da8-8c35-bcd31f9b2408
+		summarizeBy: none
+		sourceColumn: NazovKategorie
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Kategoria = m
+		mode: import
+		source =
+				let
+				    Zdroj = Excel.Workbook(File.Contents("C:\Users\mhrehova\Downloads\ecommerce_relational_1.xlsx"), null, true),
+				    Categories_Sheet = Zdroj{[Item="Categories",Kind="Sheet"]}[Data],
+				    #"Zmenený typ" = Table.TransformColumnTypes(Categories_Sheet,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Hlavičky so zvýšenou úrovňou" = Table.PromoteHeaders(#"Zmenený typ", [PromoteAllScalars=true]),
+				    #"Zmenený typ1" = Table.TransformColumnTypes(#"Hlavičky so zvýšenou úrovňou",{{"CategoryID", type text}, {"CategoryName", type text}}),
+				    #"Premenované stĺpce" = Table.RenameColumns(#"Zmenený typ1",{{"CategoryID", "KategoriaID"}, {"CategoryName", "NazovKategorie"}})
+				in
+				    #"Premenované stĺpce"
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigácia
+
+	annotation PBI_ResultType = Table
+

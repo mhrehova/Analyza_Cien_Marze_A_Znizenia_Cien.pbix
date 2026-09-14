@@ -1,0 +1,91 @@
+table Objednavky
+	lineageTag: 365002c6-be34-4f94-8950-2c5aa06c0684
+
+	measure CelkoveTrzby = ```
+			SUM('DetailObjednavok'[HodnotaPolozky])
+			
+			```
+		lineageTag: 0437d71f-ce08-4f0c-9067-30dd14a46b8b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ObjednavkaID
+		dataType: string
+		lineageTag: 4e53c7f1-afe1-4a9b-b2ba-69bec3d38b2c
+		summarizeBy: none
+		sourceColumn: ObjednavkaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObjednavkaDatum
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1953b34b-288f-4363-abc7-cf8dabd02b46
+		summarizeBy: none
+		sourceColumn: ObjednavkaDatum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ZakaznikID
+		dataType: string
+		lineageTag: 13c348f5-ff81-4261-92d3-63e7e300bdf6
+		summarizeBy: none
+		sourceColumn: ZakaznikID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 9f9583af-55c5-45b1-ac36-2a979aa8588c
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column CelkovaSuma(€)
+		dataType: double
+		lineageTag: a3d0a3ef-fcec-4db8-bb26-b6379b11d62c
+		summarizeBy: sum
+		sourceColumn: CelkovaSuma(€)
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CelkovaMarza(€)
+		dataType: double
+		lineageTag: d1e0ed56-bb61-4d3e-8e6f-a7a2af4a6079
+		summarizeBy: sum
+		sourceColumn: CelkovaMarza(€)
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	hierarchy IDZakaznikovHierarchia
+		lineageTag: 9a0363ab-1706-47bd-a702-3b7d205a3f7b
+
+		level ZakaznikID
+			lineageTag: dfbb6898-e31b-4e3d-a75b-ddb310988705
+			column: ZakaznikID
+
+	partition Objednavky = m
+		mode: import
+		source =
+				let
+				    Zdroj = Excel.Workbook(File.Contents("C:\Users\mhrehova\Downloads\ecommerce_relational_1.xlsx"), null, true),
+				    Orders_Sheet = Zdroj{[Item="Orders",Kind="Sheet"]}[Data],
+				    #"Hlavičky so zvýšenou úrovňou" = Table.PromoteHeaders(Orders_Sheet, [PromoteAllScalars=true]),
+				    #"Zmenený typ" = Table.TransformColumnTypes(#"Hlavičky so zvýšenou úrovňou",{{"OrderID", type text}, {"OrderDate", type date}, {"CustomerID", type text}, {"Status", type text}, {"TotalAmount (€)", type number}, {"TotalMargin (€)", type number}}),
+				    #"Premenované stĺpce" = Table.RenameColumns(#"Zmenený typ",{{"CustomerID", "ZakaznikID"}, {"OrderDate", "ObjednavkaDatum"}, {"OrderID", "ObjednavkaID"}, {"TotalAmount (€)", "CelkovaSuma(€)"}, {"TotalMargin (€)", "CelkovaMarza(€)"}})
+				in
+				    #"Premenované stĺpce"
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigácia
+
+	annotation PBI_ResultType = Table
+

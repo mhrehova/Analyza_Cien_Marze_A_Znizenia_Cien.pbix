@@ -1,0 +1,94 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 232.99999237060547,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 207.5
+          },
+          "nodeIndex": "Zakaznici",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 874.63999923881534,
+            "y": 135.11126168791327
+          },
+          "nodeIndex": "Datum",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 365.46038232322638,
+            "y": 6.25
+          },
+          "nodeIndex": "Objednavky",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 718.93375043077776,
+            "y": 476.89499859990337
+          },
+          "nodeIndex": "Produkty",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 324.68572994368503,
+            "y": 402.5
+          },
+          "nodeIndex": "DetailObjednavok",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1286.8899992388156,
+            "y": 25.067265368506526
+          },
+          "nodeIndex": "Kategoria",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Všetky tabuľky",
+      "zoomValue": 80,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Všetky tabuľky",
+  "defaultDiagram": "Všetky tabuľky"
+}

@@ -1,0 +1,181 @@
+table DetailObjednavok
+	lineageTag: c6d23f06-4e00-418c-9159-f28bae00fa99
+
+	measure Marza% = ```
+			DIVIDE(
+			    SUM('Objednavky'[CelkovaMarza(€)]),
+			    SUM('Objednavky'[CelkovaSuma(€)])
+			)
+			
+			
+			```
+		lineageTag: b54fcc36-9d36-4126-b218-2c5daae4f9e4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IDObjednavkyDetail
+		dataType: string
+		lineageTag: 3d2d3919-ff34-47c5-9e81-573dfce5ffc8
+		summarizeBy: none
+		sourceColumn: IDObjednavkyDetail
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column IDObjednavky
+		dataType: string
+		lineageTag: 65ff7ead-1db8-41a9-9aab-b6eede6d9da4
+		summarizeBy: none
+		sourceColumn: IDObjednavky
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProduktID
+		dataType: string
+		lineageTag: fa7f3ff9-0027-43f6-8666-437ab9e8a8ba
+		summarizeBy: none
+		sourceColumn: ProduktID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Kvalita
+		dataType: int64
+		formatString: 0
+		lineageTag: afb6f928-d1de-471e-aac5-e1f7817e8074
+		summarizeBy: sum
+		sourceColumn: Kvalita
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column OriginalnaCena(€)
+		dataType: double
+		lineageTag: a3bd67cc-4741-4e89-b51c-800290f410f7
+		summarizeBy: sum
+		sourceColumn: OriginalnaCena(€)
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Zlava
+		dataType: double
+		lineageTag: e6c24c96-3b99-4f5a-81c8-38a5b7284c5b
+		summarizeBy: sum
+		sourceColumn: Zlava
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'PredajnaCena (€)'
+		dataType: double
+		lineageTag: c98cbb82-d552-4618-af62-76f2a53565df
+		summarizeBy: sum
+		sourceColumn: PredajnaCena (€)
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Naklady(€)
+		dataType: double
+		lineageTag: ac56abe6-3cbd-4bee-b3ab-1873e317aaec
+		summarizeBy: sum
+		sourceColumn: Naklady(€)
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HodnotaPolozky
+		dataType: double
+		lineageTag: 1a19b605-5e61-46b5-8407-a669ce25c7b7
+		summarizeBy: sum
+		sourceColumn: HodnotaPolozky
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MarzaEUR(€)
+		dataType: double
+		lineageTag: 95830151-6e04-49f4-95b6-f470901b4920
+		summarizeBy: sum
+		sourceColumn: MarzaEUR(€)
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MarzaProduktu
+		dataType: double
+		lineageTag: dd6eef0a-880f-457b-9daa-a731cb5d4525
+		summarizeBy: sum
+		sourceColumn: MarzaProduktu
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DovodVratenia
+		dataType: string
+		lineageTag: 9cab00ad-1094-400a-8159-bb435dbf5065
+		summarizeBy: none
+		sourceColumn: DovodVratenia
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy HierarchiaIDPolozkyObjednávky
+		lineageTag: 88483f63-c6cc-4125-bc85-dcdcc9de2809
+
+		level IDObjednavkyDetail
+			lineageTag: cc888232-f25e-4aea-a291-8c4fbb875d98
+			column: IDObjednavkyDetail
+
+		changedProperty = IsHidden
+
+	partition DetailObjednavok = m
+		mode: import
+		source =
+				let
+				    Zdroj = Excel.Workbook(File.Contents("C:\Users\mhrehova\Downloads\ecommerce_relational_1.xlsx"), null, true),
+				    #"Order Details_Sheet" = Zdroj{[Item="Order Details",Kind="Sheet"]}[Data],
+				    #"Hlavičky so zvýšenou úrovňou" = Table.PromoteHeaders(#"Order Details_Sheet", [PromoteAllScalars=true]),
+				    #"Zmenený typ" = Table.TransformColumnTypes(#"Hlavičky so zvýšenou úrovňou",{{"OrderDetailID", type text}, {"OrderID", type text}, {"ProductID", type text}, {"Quantity", Int64.Type}, {"OriginalPrice (€)", type number}, {"DiscountPct", type number}, {"SalePrice (€)", type number}, {"Cost (€)", type number}, {"LineTotal (€)", type number}, {"MarginEUR (€)", type number}, {"MarginPct", type number}, {"ReturnReason", type text}}),
+				    #"Zmenený typ1" = Table.TransformColumnTypes(#"Zmenený typ",{{"DiscountPct", Percentage.Type}, {"MarginPct", Percentage.Type}}),
+				    #"Odstránené prázdne riadky" = Table.SelectRows(#"Zmenený typ1", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+				    #"Premenované stĺpce" = Table.RenameColumns(#"Odstránené prázdne riadky",{{"Cost (€)", "Naklady(€)"}, {"DiscountPct", "Zlava"}, {"LineTotal (€)", "HodnotaPolozky"}, {"MarginEUR (€)", "MarzaEUR(€)"}, {"MarginPct", "MarzaProduktu"}, {"OrderDetailID", "IDObjednavkyDetail"}, {"OrderID", "IDObjednavky"}, {"OriginalPrice (€)", "OriginalnaCena(€)"}, {"ProductID", "ProduktID"}, {"Quantity", "Kvalita"}, {"ReturnReason", "DovodVratenia"}, {"SalePrice (€)", "PredajnaCena (€)"}})
+				in
+				    #"Premenované stĺpce"
+
+	changedProperty = IsHidden
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigácia
+
+	annotation PBI_ResultType = Table
+

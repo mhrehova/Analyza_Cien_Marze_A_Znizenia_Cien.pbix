@@ -1,0 +1,54 @@
+table Zakaznici
+	lineageTag: 0d38bfe5-d331-4cad-a8ba-adeff54b8668
+
+	column ZakazniciID
+		dataType: string
+		lineageTag: 211f93a6-9a57-4b17-8957-e24768589b52
+		summarizeBy: none
+		sourceColumn: ZakazniciID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZakazniciMeno
+		dataType: string
+		lineageTag: abe3b3f5-6ad7-4d47-bbce-29921da7613c
+		summarizeBy: none
+		sourceColumn: ZakazniciMeno
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: e3946816-7ca6-4e03-bf9e-ab5ed2eabac8
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Krajina
+		dataType: string
+		lineageTag: c789c74b-faa4-43d3-b213-de451b249c00
+		summarizeBy: none
+		sourceColumn: Krajina
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Zakaznici = m
+		mode: import
+		source =
+				let
+				    Zdroj = Excel.Workbook(File.Contents("C:\Users\mhrehova\Downloads\ecommerce_relational_1.xlsx"), null, true),
+				    Customers_Sheet = Zdroj{[Item="Customers",Kind="Sheet"]}[Data],
+				    #"Zmenený typ" = Table.TransformColumnTypes(Customers_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}}),
+				    #"Hlavičky so zvýšenou úrovňou" = Table.PromoteHeaders(#"Zmenený typ", [PromoteAllScalars=true]),
+				    #"Zmenený typ1" = Table.TransformColumnTypes(#"Hlavičky so zvýšenou úrovňou",{{"CustomerID", type text}, {"CustomerName", type text}, {"Segment", type text}, {"Country", type text}}),
+				    #"Premenované stĺpce" = Table.RenameColumns(#"Zmenený typ1",{{"Country", "Krajina"}, {"CustomerID", "ZakazniciID"}, {"CustomerName", "ZakazniciMeno"}})
+				in
+				    #"Premenované stĺpce"
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigácia
+
+	annotation PBI_ResultType = Table
+

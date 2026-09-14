@@ -1,0 +1,88 @@
+table Datum
+	lineageTag: f3ed1f74-c02d-4bbb-afa3-3bc08d7c9ba6
+	dataCategory: Time
+
+	column Datum
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: da9667f8-7ef4-46d1-b1f9-c410d19d22ec
+		summarizeBy: none
+		sourceColumn: Datum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Rok
+		dataType: int64
+		formatString: 0
+		lineageTag: d97e8297-7b82-4957-8f0d-cb3059d90a71
+		summarizeBy: none
+		sourceColumn: Rok
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mesiace
+		dataType: int64
+		formatString: 0
+		lineageTag: 925bd449-bc1d-45ad-8274-9df17e94bfb8
+		summarizeBy: none
+		sourceColumn: Mesiace
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column NazovMesiacov
+		dataType: string
+		lineageTag: 02edb391-f1b0-475e-b1cf-fa73edd84908
+		summarizeBy: none
+		sourceColumn: NazovMesiacov
+
+		annotation SummarizationSetBy = Automatic
+
+	column Kvartal
+		dataType: string
+		lineageTag: ac5bf23f-3f34-4360-9fa1-36ddfe649ef8
+		summarizeBy: none
+		sourceColumn: Kvartal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tyzdne
+		dataType: int64
+		formatString: 0
+		lineageTag: 01e2e684-fc0c-4fba-bff4-781eb06771f6
+		summarizeBy: none
+		sourceColumn: Tyzdne
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy HierarchiaDat
+		lineageTag: b371d60f-2382-4739-b57b-eb1a966803f7
+
+		level Datum
+			lineageTag: e8b5b34a-4522-4b83-8166-fdba093cfe1c
+			column: Datum
+
+	partition Datum = m
+		mode: import
+		source =
+				let
+				    Zdroj = Excel.Workbook(File.Contents("C:\Users\mhrehova\Downloads\ecommerce_relational_1.xlsx"), null, true),
+				    Date_Sheet = Zdroj{[Item="Date",Kind="Sheet"]}[Data],
+				    #"Hlavičky so zvýšenou úrovňou" = Table.PromoteHeaders(Date_Sheet, [PromoteAllScalars=true]),
+				    #"Zmenený typ" = Table.TransformColumnTypes(#"Hlavičky so zvýšenou úrovňou",{{"Date", type date}, {"Year", Int64.Type}, {"Month", Int64.Type}, {"MonthName", type text}, {"Quarter", type text}, {"Week", Int64.Type}}),
+				    #"Premenované stĺpce" = Table.RenameColumns(#"Zmenený typ",{{"Date", "Datum"}, {"Month", "Mesiace"}, {"MonthName", "NazovMesiacov"}, {"Quarter", "Kvartal"}, {"Week", "Tyzdne"}, {"Year", "Rok"}})
+				in
+				    #"Premenované stĺpce"
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigácia
+
+	annotation PBI_ResultType = Table
+

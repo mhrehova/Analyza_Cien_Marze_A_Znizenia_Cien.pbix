@@ -1,0 +1,65 @@
+table Produkty
+	lineageTag: 45791250-88d5-4739-82b6-594e007b7066
+
+	column ProduktID
+		dataType: string
+		lineageTag: 9d7e34d5-9feb-45f8-8fe6-c8233831b29a
+		summarizeBy: none
+		sourceColumn: ProduktID
+
+		annotation SummarizationSetBy = Automatic
+
+	column NazovProduktu
+		dataType: string
+		lineageTag: 9ded7290-9bdc-44e3-a3ea-81f1d8d56e74
+		summarizeBy: none
+		sourceColumn: NazovProduktu
+
+		annotation SummarizationSetBy = Automatic
+
+	column KategoriaID
+		dataType: string
+		lineageTag: 1f81045a-ec25-4d55-9228-9998ab0892b8
+		summarizeBy: none
+		sourceColumn: KategoriaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BeznaCena(€)
+		dataType: double
+		lineageTag: ba4970c0-174a-48ee-ae4f-adeadc52ba67
+		summarizeBy: sum
+		sourceColumn: BeznaCena(€)
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Naklady(€)
+		dataType: double
+		lineageTag: ecde2dea-8653-4c8d-ab82-3fdf60cd825d
+		summarizeBy: sum
+		sourceColumn: Naklady(€)
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Produkty = m
+		mode: import
+		source =
+				let
+				    Zdroj = Excel.Workbook(File.Contents("C:\Users\mhrehova\Downloads\ecommerce_relational_1.xlsx"), null, true),
+				    Products_Sheet = Zdroj{[Item="Products",Kind="Sheet"]}[Data],
+				    #"Hlavičky so zvýšenou úrovňou" = Table.PromoteHeaders(Products_Sheet, [PromoteAllScalars=true]),
+				    #"Zmenený typ" = Table.TransformColumnTypes(#"Hlavičky so zvýšenou úrovňou",{{"ProductID", type text}, {"ProductName", type text}, {"CategoryID", type text}, {"RegularPrice (€)", type number}, {"Cost (€)", type number}}),
+				    #"Premenované stĺpce" = Table.RenameColumns(#"Zmenený typ",{{"CategoryID", "KategoriaID"}, {"Cost (€)", "Naklady(€)"}, {"ProductID", "ProduktID"}, {"ProductName", "NazovProduktu"}, {"RegularPrice (€)", "BeznaCena(€)"}})
+				in
+				    #"Premenované stĺpce"
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigácia
+
+	annotation PBI_ResultType = Table
+
