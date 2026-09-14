@@ -46,7 +46,7 @@ Dashboard má päť stránok:
 
 ## Screenshoty
 
-![Overview](<img width="1597" height="901" alt="Dashboard_Prehlad" src="https://github.com/user-attachments/assets/76ec668b-1821-495a-a6ab-1babcf27557f" />
+![Overview](<img width="1597" height="901" alt="Dashboard_Prehlad" src="https://github.com/user-attachments/assets/ed7485a5-4066-440a-b337-19351343809c" />
 )
 ![Pricing and Margin Analysis](images/pricing-margin.png)
 ![Orders and Returns](images/orders-returns.png)
