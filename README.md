@@ -54,3 +54,5 @@ Dashboard má päť stránok:
 ## Použité nástroje
 
 Power BI Desktop · Power Query · DAX · Excel (príprava a výpočty v zdrojovom datasete)
+
+## Dashboard si môžete prezrieť po stiahnutí .pbix súboru a otvorení v Power BI Desktop.
