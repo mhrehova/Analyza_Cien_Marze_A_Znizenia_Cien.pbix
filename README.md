@@ -1,0 +1,2 @@
+# Analyza_Cien_Marze_A_Znizenia_Cien.pbix
+dashboard_analyza
